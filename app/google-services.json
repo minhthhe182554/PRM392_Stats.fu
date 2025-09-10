@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "285445304228",
+    "project_id": "stats-fu",
+    "storage_bucket": "stats-fu.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:285445304228:android:07f6fe674fce13be08db31",
+        "android_client_info": {
+          "package_name": "com.hminq.statsfu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC648KIxIsXb_zTmC99Rfyk3TFl9cWZcpQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
