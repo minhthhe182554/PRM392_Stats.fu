@@ -1,4 +1,4 @@
-package com.hminq.statsfu.presentation.top;
+package com.hminq.statsfu.presentation.secondtab.top;
 
 import android.os.Bundle;
 

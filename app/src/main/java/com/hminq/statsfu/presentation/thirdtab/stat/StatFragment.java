@@ -1,4 +1,4 @@
-package com.hminq.statsfu.presentation.stat;
+package com.hminq.statsfu.presentation.thirdtab.stat;
 
 import android.os.Bundle;
 
