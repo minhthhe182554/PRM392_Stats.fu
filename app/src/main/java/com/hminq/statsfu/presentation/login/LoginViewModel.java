@@ -30,7 +30,7 @@ public class LoginViewModel extends AndroidViewModel {
     private final BrowserManager browserManager;
     private final CompositeDisposable disposables = new CompositeDisposable();
 
-    public final MutableLiveData<String> authStatus = new MutableLiveData<>("Nhấn button để login");
+    public final MutableLiveData<String> authStatus = new MutableLiveData<>("Click button for login");
     public final MutableLiveData<SpotifyAuthTokenResponse> authToken = new MutableLiveData<>();
     public final MutableLiveData<SpotifyUserProfile> userProfile = new MutableLiveData<>();
     public final MutableLiveData<String> errorMessage = new MutableLiveData<>();
@@ -47,8 +47,8 @@ public class LoginViewModel extends AndroidViewModel {
     }
 
     public void loginWithSpotify() {
-        Log.d(TAG, "Starting Spotify login flow from ViewModel");
-        authStatus.setValue("🔄 Đang tạo auth request...");
+        Log.d(TAG, "Starting Spotify login flow");
+        authStatus.setValue("Creating auth request...");
 
         disposables.add(
                 loginUseCase.createSpotifyAuthRequest()
@@ -57,21 +57,21 @@ public class LoginViewModel extends AndroidViewModel {
                         .subscribe(
                                 authRequest -> {
                                     Log.d(TAG, "Auth request created, opening browser");
-                                    authStatus.setValue("🔄 Đang mở trình duyệt...");
+                                    authStatus.setValue("Opening browser...");
 
                                     try {
                                         browserManager.openUrl(getApplication().getApplicationContext(), authRequest.getAuthUrl());
-                                        authStatus.setValue("🔄 Đang chờ đăng nhập...");
+                                        authStatus.setValue("Waiting for login...");
                                     } catch (Exception e) {
                                         Log.e(TAG, "Failed to open browser: " + e.getMessage(), e);
-                                        String errorMsg = "❌ Không thể mở trình duyệt: " + e.getMessage();
+                                        String errorMsg = "Cannot : " + e.getMessage();
                                         errorMessage.setValue(errorMsg);
                                         authStatus.setValue(errorMsg);
                                     }
                                 },
                                 error -> {
                                     Log.e(TAG, "Failed to create auth request: " + error.getMessage(), error);
-                                    String errorMsg = "❌ Không thể tạo auth request: " + error.getMessage();
+                                    String errorMsg = "Cannot create auth: " + error.getMessage();
                                     errorMessage.setValue(errorMsg);
                                     authStatus.setValue(errorMsg);
                                 }
@@ -81,7 +81,7 @@ public class LoginViewModel extends AndroidViewModel {
 
     public void handleSpotifyCallback(Uri callbackUri) {
         Log.d(TAG, "Handling Spotify callback from ViewModel: " + callbackUri.toString());
-        authStatus.setValue("🔄 Đang xử lý đăng nhập...");
+        authStatus.setValue("Handing Spotify auth callback...");
 
         disposables.add(
                 loginUseCase.handleAuthCallback(callbackUri)
@@ -89,16 +89,16 @@ public class LoginViewModel extends AndroidViewModel {
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(
                                 tokenResponse -> {
-                                    Log.d(TAG, "Authentication successful, got access token");
+                                    Log.d(TAG, "Authentication successful");
                                     authToken.setValue(tokenResponse);
-                                    authStatus.setValue("✅ Xác thực thành công! Đang lấy thông tin user...");
+                                    authStatus.setValue("Login success");
 
                                     // Now get user profile with the access token
                                     getUserProfile(tokenResponse.getAccessToken());
                                 },
                                 error -> {
                                     Log.e(TAG, "Authentication failed: " + error.getMessage(), error);
-                                    String errorMsg = "❌ Đăng nhập thất bại: " + error.getMessage();
+                                    String errorMsg = "Authentication failed: " + error.getMessage();
                                     errorMessage.setValue(errorMsg);
                                     authStatus.setValue(errorMsg);
                                 }
@@ -117,7 +117,7 @@ public class LoginViewModel extends AndroidViewModel {
                                 profile -> {
                                     Log.d(TAG, "User profile retrieved successfully: " + profile.getDisplayName());
                                     userProfile.setValue(profile);
-                                    authStatus.setValue("✅ Đăng nhập thành công!\n\n" +
+                                    authStatus.setValue("Login:\n\n" +
                                             "User: " + profile.getDisplayName() + "\n" +
                                             "Email: " + profile.getEmail() + "\n" +
                                             "Country: " + profile.getCountry() + "\n" +
@@ -125,9 +125,9 @@ public class LoginViewModel extends AndroidViewModel {
                                 },
                                 error -> {
                                     Log.e(TAG, "Failed to get user profile: " + error.getMessage(), error);
-                                    String errorMsg = "❌ Không thể lấy thông tin user: " + error.getMessage();
+                                    String errorMsg = "Failed to get user profile: " + error.getMessage();
                                     errorMessage.setValue(errorMsg);
-                                    authStatus.setValue("✅ Đăng nhập thành công nhưng không lấy được thông tin user");
+                                    authStatus.setValue("Login ok but cannot get user detail");
                                 }
                         )
         );
