@@ -43,6 +43,9 @@ android {
 }
 
 dependencies {
+    //Viewpager2
+    implementation libs.viewpager2
+
     // Retrofit
     implementation libs.retrofit
 
