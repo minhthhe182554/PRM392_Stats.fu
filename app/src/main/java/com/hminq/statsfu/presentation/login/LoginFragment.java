@@ -58,7 +58,7 @@ public class LoginFragment extends Fragment {
             if (profile != null) {
                 Log.d(TAG, "User profile received: " + profile.getDisplayName());
                 // Navigate to home fragment after successful login
-                navController.navigate(R.id.action_loginFragment_to_homeFragment);
+                navController.navigate(R.id.action_loginFragment_to_mainFragment);
             }
         });
 
