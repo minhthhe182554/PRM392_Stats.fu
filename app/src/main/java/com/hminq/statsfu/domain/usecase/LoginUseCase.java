@@ -3,7 +3,6 @@ package com.hminq.statsfu.domain.usecase;
 import android.net.Uri;
 import android.util.Log;
 
-import com.hminq.statsfu.BuildConfig;
 import com.hminq.statsfu.domain.model.SpotifyAuthCallback;
 import com.hminq.statsfu.domain.model.SpotifyAuthRequest;
 import com.hminq.statsfu.domain.model.SpotifyAuthTokenResponse;
@@ -16,8 +15,6 @@ import io.reactivex.rxjava3.core.Single;
 
 public class LoginUseCase {
     private static final String TAG = "LoginUseCase";
-    private static final String REDIRECT_URI = "statsfu://callback";
-    private static final String CLIENT_ID = BuildConfig.SPOTIFY_CLIENT_ID;
     private final AuthRepository authRepository;
     private final SpotifyAuthManager authManager;
 
@@ -79,7 +76,7 @@ public class LoginUseCase {
                 })
                 .flatMap(callback -> {
                     Log.d(TAG, "Callback validation successful, exchanging code for token");
-                    return exchangeCodeForToken(callback.getCode(), currentAuthRequest.getCodeVerifier(), CLIENT_ID, REDIRECT_URI);
+                    return exchangeCodeForToken(callback.getCode(), currentAuthRequest.getCodeVerifier());
                 })
                 .doOnSuccess(tokenResponse -> {
                     Log.d(TAG, "Authentication flow completed successfully. Access token obtained.");
@@ -91,9 +88,9 @@ public class LoginUseCase {
                 });
     }
 
-    public Single<SpotifyAuthTokenResponse> exchangeCodeForToken(String code, String codeVerifier, String clientId, String redirectUri) {
+    public Single<SpotifyAuthTokenResponse> exchangeCodeForToken(String code, String codeVerifier) {
         Log.d(TAG, "Exchanging code for token...");
-        return authRepository.exchangeCodeForToken(code, codeVerifier, clientId, redirectUri)
+        return authRepository.exchangeCodeForToken(code, codeVerifier)
                 .doOnSuccess(response -> {
                     Log.d(TAG, "Token exchange successful: " + response.toString());
                 })

@@ -1,15 +1,18 @@
 package com.hminq.statsfu.domain.service;
 
+import static android.util.Base64.NO_PADDING;
+import static android.util.Base64.NO_WRAP;
+import static android.util.Base64.URL_SAFE;
 import static android.util.Base64.encodeToString;
+
+import static java.nio.charset.StandardCharsets.US_ASCII;
 
 import android.net.Uri;
 import android.util.Log;
-
-import com.hminq.statsfu.BuildConfig;
 import com.hminq.statsfu.domain.model.SpotifyAuthCallback;
 import com.hminq.statsfu.domain.model.SpotifyAuthRequest;
+import com.hminq.statsfu.domain.model.SpotifyConstants;
 
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.UUID;
@@ -20,11 +23,11 @@ import javax.inject.Singleton;
 @Singleton
 public class SpotifyAuthManager {
     private static final String TAG = "SpotifyAuthManager";
-    private static final String REDIRECT_URI = "statsfu://callback";
-    private static final String CLIENT_ID = BuildConfig.SPOTIFY_CLIENT_ID;
+    private static final String REDIRECT_URI = SpotifyConstants.REDIRECT_URI;
+    private static final String CLIENT_ID = SpotifyConstants.CLIENT_ID;
     private static final String RESPONSE_TYPE = "code";
     private static final String CODE_CHALLENGE_METHOD = "S256";
-    private static final String SCOPES = "user-read-private user-read-email user-read-recently-played user-top-read user-read-currently-playing";
+    private static final String SCOPES = SpotifyConstants.SCOPES;
 
     @Inject
     public SpotifyAuthManager() {}
@@ -86,16 +89,16 @@ public class SpotifyAuthManager {
         sr.nextBytes(code);
         return encodeToString(
                 code,
-                android.util.Base64.URL_SAFE | android.util.Base64.NO_PADDING | android.util.Base64.NO_WRAP
+                URL_SAFE | NO_PADDING | NO_WRAP
         );
     }
 
     private String generateCodeChallenge(String verifier) {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            byte[] hash = digest.digest(verifier.getBytes(StandardCharsets.US_ASCII));
+            byte[] hash = digest.digest(verifier.getBytes(US_ASCII));
             return encodeToString(hash,
-                    android.util.Base64.URL_SAFE | android.util.Base64.NO_PADDING | android.util.Base64.NO_WRAP);
+                    URL_SAFE | NO_PADDING | NO_WRAP);
         } catch (Exception e) {
             throw new RuntimeException("Failed to generate code challenge", e);
         }

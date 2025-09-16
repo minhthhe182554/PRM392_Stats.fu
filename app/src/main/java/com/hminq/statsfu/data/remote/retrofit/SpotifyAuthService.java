@@ -1,13 +1,10 @@
 package com.hminq.statsfu.data.remote.retrofit;
 
 import com.hminq.statsfu.data.remote.model.SpotifyAuthTokenResponseDto;
-import com.hminq.statsfu.data.remote.model.SpotifyUserProfileDto;
 
 import io.reactivex.rxjava3.core.Single;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
 
 public interface SpotifyAuthService {

@@ -5,5 +5,5 @@ import com.hminq.statsfu.domain.model.SpotifyAuthTokenResponse;
 import io.reactivex.rxjava3.core.Single;
 
 public interface AuthRepository {
-    Single<SpotifyAuthTokenResponse> exchangeCodeForToken(String code, String codeVerifier, String clientId, String redirectUri);
+    Single<SpotifyAuthTokenResponse> exchangeCodeForToken(String code, String codeVerifier);
 }

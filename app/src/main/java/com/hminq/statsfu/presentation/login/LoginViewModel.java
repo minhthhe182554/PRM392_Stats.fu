@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.hminq.statsfu.BuildConfig;
 import com.hminq.statsfu.domain.model.SpotifyAuthTokenResponse;
 import com.hminq.statsfu.domain.model.SpotifyUserProfile;
 import com.hminq.statsfu.domain.service.BrowserManager;
