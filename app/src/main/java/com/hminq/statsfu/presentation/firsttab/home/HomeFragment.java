@@ -1,4 +1,4 @@
-package com.hminq.statsfu.presentation.home;
+package com.hminq.statsfu.presentation.firsttab.home;
 
 import android.os.Bundle;
 
