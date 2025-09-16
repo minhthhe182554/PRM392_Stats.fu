@@ -1,7 +1,13 @@
 plugins {
     alias(libs.plugins.android.application)
     id 'com.google.gms.google-services'
+
+    // Hilt for DI
+    alias(libs.plugins.hilt.android)
 }
+
+def localProps = new Properties()
+localProps.load(new FileInputStream(rootProject.file("local.properties")))
 
 android {
     namespace 'com.hminq.statsfu'
@@ -14,10 +20,10 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRikoom,kunner"
 
-        buildConfigField "String", "SPOTIFY_CLIENT_ID", "\"${project.properties['SPOTIFY_CLIENT_ID']}\""
-        buildConfigField "String", "SPOTIFY_CLIENT_SECRET", "\"${project.properties['SPOTIFY_CLIENT_SECRET']}\""
+        buildConfigField "String", "SPOTIFY_CLIENT_ID", "\"${localProps['SPOTIFY_CLIENT_ID']}\""
+        buildConfigField "String", "SPOTIFY_CLIENT_SECRET", "\"${localProps['SPOTIFY_CLIENT_SECRET']}\""
     }
 
     buildTypes {
@@ -32,16 +38,48 @@ android {
     }
     buildFeatures {
         buildConfig = true
+        dataBinding = true
     }
 }
 
 dependencies {
+    // Retrofit
+    implementation libs.retrofit
+
+    // Retrofit + Gson Converter
+    implementation libs.converter.gson
+
+    // Retrofit + RxJava3 Adapter
+    implementation libs.adapter.rxjava3
+
+    // RxJava3
+    implementation libs.rxjava
+
+    // RxAndroid (Scheduler cho main thread)
+    implementation libs.rxandroid
+
+    // Picasso for image loading
+    implementation libs.picasso
+
+    // Hilt
+    implementation libs.hilt.android
+    implementation libs.navigation.fragment
+    implementation libs.navigation.ui
+    annotationProcessor libs.hilt.compiler
+
+    // ViewModel + LiveData
+    implementation libs.lifecycle.viewmodel.ktx
+    implementation libs.lifecycle.livedata.ktx
+    implementation libs.lifecycle.runtime.ktx
     // Import the Firebase BoM
     implementation platform('com.google.firebase:firebase-bom:34.2.0')
+
+    // Default dependencies
     implementation libs.appcompat
     implementation libs.material
     implementation libs.activity
     implementation libs.constraintlayout
+    implementation libs.browser
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
